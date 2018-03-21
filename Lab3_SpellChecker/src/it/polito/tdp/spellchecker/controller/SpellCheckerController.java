@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -42,6 +43,12 @@ public class SpellCheckerController {
     
     @FXML // fx:id="txtArea"
     private TextArea txtArea; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="txtError"
+    private Label txtError; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="txtTime"
+    private Label txtTime; // Value injected by FXMLLoader
    
 
     @FXML
@@ -58,10 +65,15 @@ public class SpellCheckerController {
 
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	long start = System.nanoTime();
     	String stemp = txtField.getText();
     	List <String> ltemp = model.input(stemp);
-    	List<RichWord> lrw = this.model.spellCheckTextDichotomic(ltemp);
+    	List<RichWord> lrw = this.model.spellCheckText(ltemp);
+    	long stop = System.nanoTime();
     	this.aggiornaTxtArea(lrw);
+    	this.txtError.setText(String.format("The text contains %d errors", lrw.size()));
+    	this.txtTime.setText("Spell check completed in "+(stop-start)/1e9+" seconds");
+    	
     }
     
     public void aggiornaTxtArea(List<RichWord> ltemp) {
@@ -76,6 +88,7 @@ public class SpellCheckerController {
         assert btnSpellCheck != null : "fx:id=\"btnSpellCheck\" was not injected: check your FXML file 'SpellChecker.fxml'.";
         assert btnClearText != null : "fx:id=\"btnClearText\" was not injected: check your FXML file 'SpellChecker.fxml'.";
         comboBox.setItems(FXCollections.observableArrayList("English","Italian"));
+        
     }
 
 	public void setModel(Dictionary model) {
