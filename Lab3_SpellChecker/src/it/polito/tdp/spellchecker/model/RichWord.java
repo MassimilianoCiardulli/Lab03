@@ -1,7 +1,7 @@
 package it.polito.tdp.spellchecker.model;
 
 public class RichWord {
-	String parolaInserita = "";
+	String parolaInserita ;
 	boolean corretta ;
 	
 	public RichWord() {

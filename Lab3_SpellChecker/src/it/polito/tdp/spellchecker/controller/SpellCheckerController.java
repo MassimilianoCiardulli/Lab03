@@ -65,10 +65,11 @@ public class SpellCheckerController {
 
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	this.txtArea.clear();
     	long start = System.nanoTime();
     	String stemp = txtField.getText();
     	List <String> ltemp = model.input(stemp);
-    	List<RichWord> lrw = this.model.spellCheckText(ltemp);
+    	List<RichWord> lrw = this.model.spellCheckTextDichotomic(ltemp);
     	long stop = System.nanoTime();
     	this.aggiornaTxtArea(lrw);
     	this.txtError.setText(String.format("The text contains %d errors", lrw.size()));
@@ -87,8 +88,9 @@ public class SpellCheckerController {
         assert comboBox != null : "fx:id=\"comboBox\" was not injected: check your FXML file 'SpellChecker.fxml'.";
         assert btnSpellCheck != null : "fx:id=\"btnSpellCheck\" was not injected: check your FXML file 'SpellChecker.fxml'.";
         assert btnClearText != null : "fx:id=\"btnClearText\" was not injected: check your FXML file 'SpellChecker.fxml'.";
+        	    
         comboBox.setItems(FXCollections.observableArrayList("English","Italian"));
-        
+        comboBox.getSelectionModel().select(0);
     }
 
 	public void setModel(Dictionary model) {
