@@ -127,38 +127,29 @@ public class Dictionary {
 		if(dictionary.isEmpty())
 			this.loadDictionary("English");
 		
-		int pos = dictionary.size()/2;
-		List<RichWord> ltemp = new LinkedList<RichWord>() ;
+		List<RichWord> ltemp = new LinkedList<RichWord>();
+		int low = 0;
+		int high = inputTextList.size()-1;
 		boolean trovato ;
-		int count = 0;
 		
 		for(String s:inputTextList) {
-			trovato = false;
-			do {
-				if(pos <= dictionary.size() && pos >= 0 && s.toLowerCase().trim().compareTo(dictionary.get(pos).toLowerCase())==0) {
-					//Ho trovato la parola
-					trovato = true;
-				}
-				
-				if(pos <= dictionary.size() && pos >= 0 && s.toLowerCase().trim().compareTo(dictionary.get(pos).toLowerCase())<0) {
-					//Viene prima
-					pos -= (inputTextList.size()-pos)/2;
-					count++;
-					
-				}
-				
-				if(pos <= dictionary.size() && pos >= 0 && s.toLowerCase().trim().compareTo(dictionary.get(pos).toLowerCase())>0) {
-					//viene dopo
-					pos += (inputTextList.size()-pos)/2;
-					count++;
-				}
-				
-				if(pos > dictionary.size() || pos < 0)
-					break;
-				
-			} while( !trovato || count==inputTextList.size()/2 );
 			
-			if(trovato==false) {
+			trovato = false;
+			
+			while (low<=high) {
+				int mid = (low+high)/2;
+				if(dictionary.get(mid).equals(s)) {
+					trovato = true;
+					break;//valore trovato nella posizione mid
+		        }
+				else if (dictionary.get(mid).compareTo(s)<0) {
+					low = mid + 1;
+				}
+				else {
+					high = mid - 1;
+				}
+			}
+			if(!trovato) {
 				RichWord rw = new RichWord();
 				rw.setCorretta(false);
 				rw.setParolaInserita(s);
